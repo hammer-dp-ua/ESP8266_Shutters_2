@@ -1,0 +1,1 @@
+Second version of the project using CMake

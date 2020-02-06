@@ -1,0 +1,35 @@
+#ifndef DEVICE_SETTINGS
+#define DEVICE_SETTINGS
+
+#define ROOM_SHUTTER
+//#define KITCHEN_SHUTTER
+//#define TESTING
+
+// const are saved at 40200000h (flash memory)
+#ifdef TESTING
+static const char OWN_IP_ADDRESS[] = "192.168.0.55";
+#elif defined(KITCHEN_SHUTTER)
+static const char OWN_IP_ADDRESS[] = "192.168.0.29"; // 1MB Flash
+#elif defined(ROOM_SHUTTER)
+static const char OWN_IP_ADDRESS[] = "192.168.0.27"; // 1MB Flash
+#endif
+
+static const char OWN_NETMASK[] = "255.255.255.0";
+static const char OWN_GETAWAY_ADDRESS[] = "192.168.0.1";
+static const char SERVER_IP_ADDRESS[] = "192.168.0.2";
+static const char ACCESS_POINT_PASSWORD[] = "x>vZf8bqX]l-qg%";
+
+#ifdef TESTING
+static const char DEVICE_NAME[] = "Testing";
+#elif defined(ROOM_SHUTTER)
+static const char DEVICE_NAME[] = "Room shutter";
+#elif defined(KITCHEN_SHUTTER)
+static const char DEVICE_NAME[] = "Kitchen shutter";
+#endif
+
+static const char ACCESS_POINT_NAME[] = "SAMSUNG";
+
+#define SERVER_PORT 80
+#define LOCAL_SERVER_PORT 80
+
+#endif
