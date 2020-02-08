@@ -8,7 +8,10 @@
  */
 
 #include "user_main.h"
+#include "ota.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
 static unsigned int milliseconds_counter_g;
 static int signal_strength_g;
 static unsigned short errors_counter_g = 0;
@@ -20,7 +23,7 @@ static unsigned int repetitive_tcp_server_errors_counter_g = 0;
 static shutter_state shutters_states_g[2];
 static int opened_sockets_g[2];
 
-static os_timer_t millisecons_time_serv_g;
+static os_timer_t milliseconds_time_serv_g;
 static os_timer_t errors_checker_timer_g;
 static os_timer_t blink_both_leds_g;
 static os_timer_t status_sender_timer_g;
@@ -37,10 +40,10 @@ static void milliseconds_counter() {
    milliseconds_counter_g++;
 }
 
-static void start_100millisecons_counter() {
-   os_timer_disarm(&millisecons_time_serv_g);
-   os_timer_setfn(&millisecons_time_serv_g, (os_timer_func_t *) milliseconds_counter, NULL);
-   os_timer_arm(&millisecons_time_serv_g, 1000 / MILLISECONDS_COUNTER_DIVIDER, true); // 1000/10 = 100 ms
+static void start_100milliseconds_counter() {
+   os_timer_disarm(&milliseconds_time_serv_g);
+   os_timer_setfn(&milliseconds_time_serv_g, (os_timer_func_t *) milliseconds_counter, NULL);
+   os_timer_arm(&milliseconds_time_serv_g, 1000 / MILLISECONDS_COUNTER_DIVIDER, true); // 1000/10 = 100 ms
 }
 
 static void scan_access_point_task(void *pvParameters) {
@@ -69,7 +72,7 @@ static void scan_access_point_task(void *pvParameters) {
 
          #ifdef ALLOW_USE_PRINTF
          printf("Scanned %u access points", scanned_access_points_amount);
-         for (unsigned char i = 0; i < scanned_access_points_amount; i++) {
+         for (unsigned short i = 0; i < scanned_access_points_amount; i++) {
             printf("\nScan index: %u, ssid: %s, rssi: %d", i, scanned_access_points[i].ssid, scanned_access_points[i].rssi);
          }
          printf("\n");
@@ -190,7 +193,7 @@ void send_status_info_task(void *pvParameters) {
 
       esp_reset_reason_t rst_info = esp_reset_reason();
 
-      switch(rst_info) {
+      switch (rst_info) {
          case ESP_RST_UNKNOWN:
             reset_reason = "Unknown";
             break;
@@ -223,6 +226,8 @@ void send_status_info_task(void *pvParameters) {
             break;
          case ESP_RST_SDIO:
             reset_reason = "SDIO";
+            break;
+         default:
             break;
       }
 
@@ -773,7 +778,7 @@ static void pins_config() {
    #endif
 
    output_pins.pull_up_en = GPIO_PULLUP_DISABLE;
-   output_pins.pull_down_en = GPIO_PULLUP_DISABLE;
+   output_pins.pull_down_en = GPIO_PULLDOWN_DISABLE;
 
    gpio_config(&output_pins);
 
@@ -977,5 +982,5 @@ void app_main(void) {
 
    schedule_sending_status_info(STATUS_REQUESTS_SEND_INTERVAL_MS);
 
-   start_100millisecons_counter();
+   start_100milliseconds_counter();
 }

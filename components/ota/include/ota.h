@@ -2,6 +2,7 @@
 #include "global_definitions.h"
 #include "sdkconfig.h"
 #include "esp_system.h"
+#include "esp_partition.h"
 
 #include "freertos/FreeRTOS.h"
 #include "event_groups.h"

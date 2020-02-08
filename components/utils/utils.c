@@ -337,7 +337,7 @@ int connect_to_http_server() {
    return socket_id;
 }
 
-char *send_request(char *request, unsigned short response_buffer_size, unsigned int *milliseconds_counter) {
+char *send_request(char *request, unsigned short response_buffer_size, const unsigned int *milliseconds_counter) {
    assert(request != NULL);
    assert(response_buffer_size > 0);
 

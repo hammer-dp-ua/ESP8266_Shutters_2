@@ -1,4 +1,4 @@
-#include "include/ota.h"
+#include "ota.h"
 
 // OTA data write buffer ready to write to the flash
 static char ota_write_data[BUFFSIZE + 1] = { 0 };

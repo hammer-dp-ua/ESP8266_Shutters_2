@@ -28,9 +28,6 @@ struct malloc_logger_element {
 };
 
 char *malloc_logger(unsigned int element_size, unsigned int allocated_time, const char *file_name, unsigned int variable_line, bool is_zalloc);
-unsigned char get_malloc_logger_list_elements_amount();
 void free_logger(void *allocated_address_element_to_free, unsigned int line_no);
-struct malloc_logger_element get_last_element_in_logger_list();
-void print_not_empty_elements_lines();
 
 #endif

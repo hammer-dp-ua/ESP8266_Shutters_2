@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="Shutters" targetName="___idf_spi_ram" />
+      <config projectName="Shutters" targetName="___idf_utils" />
+      <config projectName="Shutters" targetName="___idf_spi_flash" />
+      <config projectName="Shutters" targetName="___idf_coap" />
+      <config projectName="Shutters" targetName="___idf_jsmn" />
+      <config projectName="Shutters" targetName="___idf_esptool_py" />
+      <config projectName="Shutters" targetName="___idf_esp_gdbstub" />
+      <config projectName="Shutters" targetName="__idf_freertos" />
+      <config projectName="Shutters" targetName="___idf_protobuf-c" />
+      <config projectName="Shutters" targetName="size-files" />
+      <config projectName="Shutters" targetName="apidoc" />
+      <config projectName="Shutters" targetName="erase_otadata" />
+      <config projectName="Shutters" targetName="___idf_console" />
+      <config projectName="Shutters" targetName="__idf_tcp_transport" />
+      <config projectName="Shutters" targetName="confserver" />
+      <config projectName="Shutters" targetName="partition_table" />
+      <config projectName="Shutters" targetName="__idf_esp_common" />
+      <config projectName="Shutters" targetName="__idf_ota" />
+      <config projectName="Shutters" targetName="___idf_mdns" />
+      <config projectName="Shutters" targetName="___idf_mbedtls" />
+      <config projectName="Shutters" targetName="___idf_esp_http_client" />
+      <config projectName="Shutters" targetName="__idf_esp_http_server" />
+      <config projectName="Shutters" targetName="size-components" />
+      <config projectName="Shutters" targetName="___idf_esp8266" />
+      <config projectName="Shutters" targetName="___idf_common" />
+      <config projectName="Shutters" targetName="___idf_esp_ringbuf" />
+      <config projectName="Shutters" targetName="__ldgen_output_esp8266.project.ld" />
+      <config projectName="Shutters" targetName="___idf_vfs" />
+      <config projectName="Shutters" targetName="mbedcrypto" />
+      <config projectName="Shutters" targetName="esp8266_linker_script" />
+      <config projectName="Shutters" targetName="Shutters.elf" />
+      <config projectName="Shutters" targetName="menuconfig" />
+      <config projectName="Shutters" targetName="gen_project_binary" />
+      <config projectName="Shutters" targetName="bootloader" />
+      <config projectName="Shutters" targetName="___idf_json" />
+      <config projectName="Shutters" targetName="__idf_smartconfig_ack" />
+      <config projectName="Shutters" targetName="__idf_mqtt" />
+      <config projectName="Shutters" targetName="___idf_heap" />
+      <config projectName="Shutters" targetName="___idf_bootloader" />
+      <config projectName="Shutters" targetName="___idf_lwip" />
+      <config projectName="Shutters" targetName="__idf_nvs_flash" />
+      <config projectName="Shutters" targetName="___idf_esp_https_ota" />
+      <config projectName="Shutters" targetName="__idf_protobuf-c" />
+      <config projectName="Shutters" targetName="flash" />
+      <config projectName="Shutters" targetName="__idf_esp8266" />
+      <config projectName="Shutters" targetName="___idf_newlib" />
+      <config projectName="Shutters" targetName="___idf_freertos" />
+      <config projectName="Shutters" targetName="mbedtls" />
+      <config projectName="Shutters" targetName="___idf_libsodium" />
+      <config projectName="Shutters" targetName="__idf_app_update" />
+      <config projectName="Shutters" targetName="___idf_esp-wolfssl" />
+      <config projectName="Shutters" targetName="__idf_esp_ringbuf" />
+      <config projectName="Shutters" targetName="__idf_openssl" />
+      <config projectName="Shutters" targetName="___idf_nvs_flash" />
+      <config projectName="Shutters" targetName="__idf_esp_gdbstub" />
+      <config projectName="Shutters" targetName="__idf_log" />
+      <config projectName="Shutters" targetName="__idf_build_target" />
+      <config projectName="Shutters" targetName="___idf_main" />
+      <config projectName="Shutters" targetName="___idf_http_parser" />
+      <config projectName="Shutters" targetName="___idf_tcpip_adapter" />
+      <config projectName="Shutters" targetName="___idf_mqtt" />
+      <config projectName="Shutters" targetName="___idf_malloc_logger" />
+      <config projectName="Shutters" targetName="__idf_json" />
+      <config projectName="Shutters" targetName="___idf_esp_http_server" />
+      <config projectName="Shutters" targetName="__idf_heap" />
+      <config projectName="Shutters" targetName="mbedx509" />
+      <config projectName="Shutters" targetName="___idf_partition_table" />
+      <config projectName="Shutters" targetName="__idf_tcpip_adapter" />
+      <config projectName="Shutters" targetName="__idf_libsodium" />
+      <config projectName="Shutters" targetName="app-flash" />
+      <config projectName="Shutters" targetName="lib" />
+      <config projectName="Shutters" targetName="__idf_http_parser" />
+      <config projectName="Shutters" targetName="___idf_wifi_provisioning" />
+      <config projectName="Shutters" targetName="_project_elf_src" />
+      <config projectName="Shutters" targetName="___idf_esp_common" />
+      <config projectName="Shutters" targetName="__idf_wpa_supplicant" />
+      <config projectName="Shutters" targetName="___idf_bootloader_support" />
+      <config projectName="Shutters" targetName="__idf_util" />
+      <config projectName="Shutters" targetName="___idf_pthread" />
+      <config projectName="Shutters" targetName="bootloader-flash" />
+      <config projectName="Shutters" targetName="__idf_esp-tls" />
+      <config projectName="Shutters" targetName="___idf_log" />
+      <config projectName="Shutters" targetName="mconf-idf" />
+      <config projectName="Shutters" targetName="__idf_wifi_provisioning" />
+      <config projectName="Shutters" targetName="__idf_malloc_logger" />
+      <config projectName="Shutters" targetName="__idf_lwip" />
+      <config projectName="Shutters" targetName="___idf_protocomm" />
+      <config projectName="Shutters" targetName="___idf_util" />
+      <config projectName="Shutters" targetName="___idf_spiffs" />
+      <config projectName="Shutters" targetName="__idf_esp_http_client" />
+      <config projectName="Shutters" targetName="__idf_utils" />
+      <config projectName="Shutters" targetName="read_otadata" />
+      <config projectName="Shutters" targetName="___idf_openssl" />
+      <config projectName="Shutters" targetName="___idf_tcp_transport" />
+      <config projectName="Shutters" targetName="__idf_jsmn" />
+      <config projectName="Shutters" targetName="___idf_wpa_supplicant" />
+      <config projectName="Shutters" targetName="___idf_esp-tls" />
+      <config projectName="Shutters" targetName="blank_ota_data" />
+      <config projectName="Shutters" targetName="__idf_spi_ram" />
+      <config projectName="Shutters" targetName="___idf_ota" />
+      <config projectName="Shutters" targetName="__idf_coap" />
+      <config projectName="Shutters" targetName="__idf_bootloader_support" />
+      <config projectName="Shutters" targetName="___idf_smartconfig_ack" />
+      <config projectName="Shutters" targetName="__idf_newlib" />
+      <config projectName="Shutters" targetName="__idf_spi_flash" />
+      <config projectName="Shutters" targetName="size" />
+      <config projectName="Shutters" targetName="__idf_esp_https_ota" />
+      <config projectName="Shutters" targetName="__idf_vfs" />
+      <config projectName="Shutters" targetName="app" />
+      <config projectName="Shutters" targetName="__idf_main" />
+      <config projectName="Shutters" targetName="___idf_app_update" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" GENERATION_PASS_SYSTEM_ENVIRONMENT="false">
+        <ADDITIONAL_GENERATION_ENVIRONMENT>
+          <envs>
+            <env name="IDF_PATH" value="C:\Users\USER\ESP8266\ESP8266_RTOS_SDK_latest" />
+            <env name="PYTHON" value="C:\Python_2.7.17\python.exe" />
+            <env name="GIT_PATH" value="C:\Program Files\Git\cmd" />
+            <env name="MINGW_BIN_PATH" value="C:\MinGW\bin" />
+            <env name="XTENSA_BIN_PATH" value="C:\Users\USER\ESP8266\xtensa-lx106-elf-win32-1.22.0-100-ge567ec7-5.2.0\bin" />
+          </envs>
+        </ADDITIONAL_GENERATION_ENVIRONMENT>
+      </configuration>
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ee34f94a-6f68-4cf4-8a66-2e61080d5a8a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/common/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/malloc_logger/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ota/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/utils/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Shutters.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Shutters.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ota/component.mk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ota/include/ota.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/ota/include/ota.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ota/ota.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/ota/ota.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/component.mk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/include/device_settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/include/device_settings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/include/global_definitions.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/include/global_definitions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/include/malloc_logger.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/malloc_logger/include/malloc_logger.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/include/user_main.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/include/user_main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/include/utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/utils/include/utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/malloc_logger.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/malloc_logger/malloc_logger.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/user_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/user_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/utils/utils.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdkconfig" beforeDir="false" afterPath="$PROJECT_DIR$/sdkconfig" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1XP4fFrfc9f6UdVaQKdkBmzCLM4" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/CMakeLists.txt" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\common" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\malloc_logger" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\utils" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\common\include" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\malloc_logger" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\malloc_logger\include" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\utils" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\utils\include" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="ESP.FLASH" factoryName="ESP32 flash rom" configurationName="Debug" port="/dev/ttyS5" baud="115200">
+      <method v="2" />
+    </configuration>
+    <configuration name="all" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Shutters" TARGET_NAME="app" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/CMakeLists.txt">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ee34f94a-6f68-4cf4-8a66-2e61080d5a8a" name="Default Changelist" comment="" />
+      <created>1580934496167</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580934496167</updated>
+      <workItem from="1580934497345" duration="492000" />
+      <workItem from="1581008176094" duration="4082000" />
+      <workItem from="1581012281419" duration="7844000" />
+      <workItem from="1581025193355" duration="235000" />
+      <workItem from="1581058527227" duration="49000" />
+      <workItem from="1581058608454" duration="2684000" />
+      <workItem from="1581061303650" duration="3136000" />
+      <workItem from="1581065314416" duration="16000" />
+      <workItem from="1581065336801" duration="17751000" />
+      <workItem from="1581158942083" duration="280000" />
+      <workItem from="1581159402235" duration="1814000" />
+      <workItem from="1581161231686" duration="2466000" />
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/../../.." />
+    </ignored-roots>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="182" key="#Deployment" timestamp="1581010678546">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="182" key="#Deployment/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581010678546" />
+    <state x="686" y="248" key="#all" timestamp="1581162685588">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="686" y="248" key="#all/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581162685588" />
+    <state x="317" y="61" width="1092" height="820" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581163776626">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="317" y="61" width="1092" height="820" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581163776626" />
+    <state x="855" y="247" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1581118027135">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="855" y="247" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581118027135" />
+    <state x="686" y="154" key="#idf.py_help" timestamp="1581117241324">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="686" y="154" key="#idf.py_help/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581117241324" />
+    <state x="35" y="120" width="1858" height="876" key="EnvironmentVariablesDialog" timestamp="1581163743658">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="35" y="120" width="1858" height="876" key="EnvironmentVariablesDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581163743658" />
+    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1581163758314">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581163758314" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1581161086745">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581161086745" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1581161086745">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581161086745" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1581161086745">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581161086745" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1581161086745">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581161086745" />
+    <state x="220" y="110" width="1347" height="708" key="SettingsEditor" timestamp="1581164070896">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="220" y="110" width="1347" height="708" key="SettingsEditor/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581164070896" />
+    <state x="685" y="169" key="refactoring.ChangeSignatureDialog" timestamp="1581108690276">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="685" y="169" key="refactoring.ChangeSignatureDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581108690276" />
+  </component>
+</project>
