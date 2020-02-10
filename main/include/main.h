@@ -15,6 +15,7 @@
 #include "internal/esp_system_internal.h"
 #include "esp_wifi.h"
 #include "string.h"
+
 #include "utils.h"
 #include "event_groups.h"
 #include "global_definitions.h"
@@ -44,7 +45,7 @@
 #define FIRST_STATUS_INFO_SENT_FLAG    (1 << 0)
 #define UPDATE_FIRMWARE_FLAG           (1 << 1)
 #define REQUEST_ERROR_OCCURRED_FLAG    (1 << 2)
-#define DELETE_TCP_SERVER_TASK_FLAG    (1 << 3)
+#define STATUS_INFO_IS_BEING_SENT_FLAG (1 << 3)
 
 #define ERRORS_CHECKER_INTERVAL_MS (10 * 1000)
 #define STATUS_REQUESTS_SEND_INTERVAL_MS (60 * 1000)

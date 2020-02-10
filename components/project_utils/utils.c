@@ -11,9 +11,9 @@ static EventGroupHandle_t wifi_event_group;
  */
 static const int WIFI_CONNECTED_BIT = (1 << 0);
 
-static void (*on_wifi_connected)();
-static void (*on_wifi_disconnected)();
-static void (*on_wifi_connection)();
+static void (*on_wifi_connected_g)();
+static void (*on_wifi_disconnected_g)();
+static void (*on_wifi_connection_g)();
 
 static os_timer_t wi_fi_reconnection_timer_g;
 
@@ -115,7 +115,7 @@ static esp_err_t esp_event_handler(void *ctx, system_event_t *event) {
          #endif
 
          connect_to_ap();
-         on_wifi_connection();
+         on_wifi_connection_g();
 
          break;
       case SYSTEM_EVENT_STA_STOP:
@@ -138,7 +138,7 @@ static esp_err_t esp_event_handler(void *ctx, system_event_t *event) {
 
          os_timer_disarm(&wi_fi_reconnection_timer_g);
          xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_BIT);
-         on_wifi_connected();
+         on_wifi_connected_g();
          break;
       case SYSTEM_EVENT_STA_CONNECTED:
          #ifdef ALLOW_USE_PRINTF
@@ -157,8 +157,8 @@ static esp_err_t esp_event_handler(void *ctx, system_event_t *event) {
             esp_restart();
          }
 
-         on_wifi_disconnected();
-         on_wifi_connection();
+         on_wifi_disconnected_g();
+         on_wifi_connection_g();
          xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT);
 
          os_timer_disarm(&wi_fi_reconnection_timer_g);
@@ -173,24 +173,26 @@ static esp_err_t esp_event_handler(void *ctx, system_event_t *event) {
 }
 
 void wifi_init_sta(void (*on_connected)(), void (*on_disconnected)(), void (*on_connection)()) {
-   on_wifi_connected = on_connected;
-   on_wifi_disconnected = on_disconnected;
-   on_wifi_connection = on_connection;
+   on_wifi_connected_g = on_connected;
+   on_wifi_disconnected_g = on_disconnected;
+   on_wifi_connection_g = on_connection;
 
    wifi_event_group = xEventGroupCreate();
 
-   ESP_ERROR_CHECK(esp_event_loop_init(esp_event_handler, NULL));
+   ESP_ERROR_CHECK(esp_event_loop_init(esp_event_handler, NULL))
 
-   wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-   ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+   wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT()
+   ESP_ERROR_CHECK(esp_wifi_init(&cfg))
 
    wifi_config_t wifi_config;
    memcpy(&wifi_config.sta.ssid, ACCESS_POINT_NAME, 32);
    memcpy(&wifi_config.sta.password, ACCESS_POINT_PASSWORD, 64);
+   wifi_config.sta.scan_method = WIFI_ALL_CHANNEL_SCAN;
+   wifi_config.sta.bssid_set = false;
 
-   ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-   ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
-   ESP_ERROR_CHECK(esp_wifi_start());
+   ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA))
+   ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config))
+   ESP_ERROR_CHECK(esp_wifi_start())
 
    #ifdef ALLOW_USE_PRINTF
    printf("\nwifi_init_sta finished\n");

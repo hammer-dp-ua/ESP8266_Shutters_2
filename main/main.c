@@ -3,15 +3,13 @@
  *
  * Required connections:
  * GPIO15 to GND
- * GPIO to "+" OR to "GND" for flashing
+ * GPIO0 to "+" OR to "GND" for flashing
  * EN to "+"
  */
 
-#include "user_main.h"
+#include "main.h"
 #include "ota.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
 static unsigned int milliseconds_counter_g;
 static int signal_strength_g;
 static unsigned short errors_counter_g = 0;
@@ -46,17 +44,23 @@ static void start_100milliseconds_counter() {
    os_timer_arm(&milliseconds_time_serv_g, 1000 / MILLISECONDS_COUNTER_DIVIDER, true); // 1000/10 = 100 ms
 }
 
-static void scan_access_point_task(void *pvParameters) {
+static bool is_being_updated() {
+   return (xEventGroupGetBits(general_event_group_g) & UPDATE_FIRMWARE_FLAG);
+}
+
+static void scan_access_point_task() {
    long rescan_when_connected_task_delay = 10 * 60 * 1000 / portTICK_RATE_MS; // 10 mins
    long rescan_when_not_connected_task_delay = 10 * 1000 / portTICK_RATE_MS; // 10 secs
    wifi_scan_config_t scan_config;
    unsigned short scanned_access_points_amount = 1;
    wifi_ap_record_t scanned_access_points[1];
 
-   scan_config.ssid = (unsigned char *) ACCESS_POINT_NAME;
-   scan_config.bssid = 0;
-   scan_config.channel = 0;
-   scan_config.show_hidden = false;
+   //scan_config.ssid = (unsigned char *) ACCESS_POINT_NAME;
+   //scan_config.bssid = 0;
+   //scan_config.channel = 0;
+   //scan_config.show_hidden = false;
+   scan_config.show_hidden = true;
+   scan_config.scan_type = WIFI_SCAN_TYPE_ACTIVE;
 
    for (;;) {
       #ifdef ALLOW_USE_PRINTF
@@ -65,7 +69,7 @@ static void scan_access_point_task(void *pvParameters) {
 
       xSemaphoreTake(wirelessNetworkActionsSemaphore_g, portMAX_DELAY);
 
-      if (is_connected_to_wifi() && ((xEventGroupGetBits(general_event_group_g) & UPDATE_FIRMWARE_FLAG) == 0) &&
+      if (is_connected_to_wifi() && !is_being_updated() &&
             esp_wifi_scan_start(&scan_config, true) == ESP_OK &&
             esp_wifi_scan_get_ap_records(&scanned_access_points_amount, scanned_access_points) == ESP_OK) {
          signal_strength_g = scanned_access_points[0].rssi;
@@ -145,7 +149,8 @@ static void on_response_error() {
    xEventGroupSetBits(general_event_group_g, REQUEST_ERROR_OCCURRED_FLAG);
 }
 
-void send_status_info_task(void *pvParameters) {
+void send_status_info_task() {
+   xEventGroupSetBits(general_event_group_g, STATUS_INFO_IS_BEING_SENT_FLAG);
    xSemaphoreTake(wirelessNetworkActionsSemaphore_g, portMAX_DELAY);
    blink_on_send(SERVER_AVAILABILITY_STATUS_LED_PIN);
    for (unsigned char i = 0; i < 2; i++) {
@@ -317,13 +322,16 @@ void send_status_info_task(void *pvParameters) {
       FREE(response);
    }
 
+   xEventGroupClearBits(general_event_group_g, STATUS_INFO_IS_BEING_SENT_FLAG);
    xSemaphoreGive(wirelessNetworkActionsSemaphore_g);
    vTaskDelete(NULL);
 }
 
 static void send_status_info() {
-   if (is_connected_to_wifi() == false || xTaskGetHandle(SEND_STATUS_INFO_TASK_NAME) != NULL ||
-         (xEventGroupGetBits(general_event_group_g) & UPDATE_FIRMWARE_FLAG)) {
+   bool not_connected_to_wi_fi = !is_connected_to_wifi();
+   bool is_being_sent = (xEventGroupGetBits(general_event_group_g) & STATUS_INFO_IS_BEING_SENT_FLAG) > 0;
+
+   if (not_connected_to_wi_fi || is_being_sent || is_being_updated()) {
       return;
    }
 
@@ -454,13 +462,16 @@ static void stop_shutter_activity() {
 }
 
 static void open_shutter(unsigned char opening_time_sec, unsigned char shutter_no, bool also_send_request) {
+   unsigned int opening_time_ms = (unsigned int) opening_time_sec;
+   opening_time_ms *= 1000;
+
    #ifdef ALLOW_USE_PRINTF
-   printf("\nOpening shutter %u\n", shutter_no);
+   printf("\nOpening shutter: %u, opening time: %ums, send request: %u\n", shutter_no, opening_time_ms, also_send_request);
    #endif
 
    os_timer_disarm(&shutters_activity_g);
    os_timer_setfn(&shutters_activity_g, (os_timer_func_t *) stop_shutter_activity, NULL);
-   os_timer_arm(&shutters_activity_g, ((unsigned int) opening_time_sec) * 1000, false);
+   os_timer_arm(&shutters_activity_g, opening_time_ms, false);
 
    #ifdef ROOM_SHUTTER
    shutters_states_g[0].shutter_no = 0;
@@ -504,13 +515,16 @@ static void open_shutter(unsigned char opening_time_sec, unsigned char shutter_n
 }
 
 static void close_shutter(unsigned char closing_time_sec, unsigned char shutter_no, bool also_send_request) {
+   unsigned int closing_time_ms = (unsigned int) closing_time_sec;
+   closing_time_ms *= 1000;
+
    #ifdef ALLOW_USE_PRINTF
-   printf("\nClosing shutter %u\n", shutter_no);
+   printf("\nClosing shutter: %u, closing time: %ums, send request: %u\n", shutter_no, closing_time_ms, also_send_request);
    #endif
 
    os_timer_disarm(&shutters_activity_g);
    os_timer_setfn(&shutters_activity_g, (os_timer_func_t *) stop_shutter_activity, NULL);
-   os_timer_arm(&shutters_activity_g, ((unsigned int) closing_time_sec) * 1000, false);
+   os_timer_arm(&shutters_activity_g, closing_time_ms, false);
 
    #ifdef ROOM_SHUTTER
    shutters_states_g[0].shutter_no = shutter_no;
@@ -614,16 +628,14 @@ static void process_request_and_send_response(char *request, int socket) {
    }
 }
 
-static void tcp_server_task(void *pvParameters) {
+static void tcp_server_task() {
    while (true) {
-      if ((xEventGroupGetBits(general_event_group_g) & UPDATE_FIRMWARE_FLAG) ||
-            (xEventGroupGetBits(general_event_group_g) & DELETE_TCP_SERVER_TASK_FLAG)) {
+      if (is_being_updated()) {
          // If some request is receipted during update
          #ifdef ALLOW_USE_PRINTF
          printf("tcp_server_task is to be removed\n");
          #endif
 
-         xEventGroupClearBits(general_event_group_g, DELETE_TCP_SERVER_TASK_FLAG);
          vTaskDelete(NULL);
       }
 
@@ -700,8 +712,7 @@ static void tcp_server_task(void *pvParameters) {
       // Blocks here until a request
       int accept_socket = accept(listen_socket, (struct sockaddr *) &client_addr, &addr_len);
 
-      if ((xEventGroupGetBits(general_event_group_g) & UPDATE_FIRMWARE_FLAG) ||
-            (xEventGroupGetBits(general_event_group_g) & DELETE_TCP_SERVER_TASK_FLAG)) {
+      if (is_being_updated()) {
          continue;
       }
 
@@ -823,8 +834,6 @@ void on_wifi_disconnected_task() {
    gpio_set_level(AP_CONNECTION_STATUS_LED_PIN, 0);
    gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 0);
 
-   //xEventGroupSetBits(general_event_group_g, DELETE_TCP_SERVER_TASK_FLAG);
-
    vTaskDelete(tcp_server_task_g);
    close_opened_sockets();
    vTaskDelete(NULL);
@@ -834,7 +843,7 @@ void on_wifi_disconnected() {
    xTaskCreate(on_wifi_disconnected_task, "on_wifi_disconnected_task", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 }
 
-static void blink_on_wifi_connection_task(void *pvParameters) {
+static void blink_on_wifi_connection_task() {
    blink_on_send(AP_CONNECTION_STATUS_LED_PIN);
    vTaskDelete(NULL);
 }
@@ -890,17 +899,6 @@ void check_errors_amount() {
 
    if (restart) {
       esp_restart();
-   }
-}
-
-static void blink_gpio_task(void *pvParameters) {
-   while (true) {
-      if (gpio_get_level(GPIO_NUM_5)) {
-         gpio_set_level(GPIO_NUM_5, 0);
-      } else {
-         gpio_set_level(GPIO_NUM_5, 1);
-      }
-      vTaskDelay(200 / portTICK_RATE_MS);
    }
 }
 
@@ -975,7 +973,7 @@ void app_main(void) {
 
    wifi_init_sta(on_wifi_connected, on_wifi_disconnected, blink_on_wifi_connection);
 
-   xTaskCreate(scan_access_point_task, "scan_access_point_task", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+   xTaskCreate(scan_access_point_task, "scan_access_point_task", configMINIMAL_STACK_SIZE * 3, NULL, 1, NULL);
 
    os_timer_setfn(&errors_checker_timer_g, (os_timer_func_t *) check_errors_amount, NULL);
    os_timer_arm(&errors_checker_timer_g, ERRORS_CHECKER_INTERVAL_MS, true);

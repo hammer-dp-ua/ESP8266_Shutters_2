@@ -1,8 +1,8 @@
-#include "esp_ota_ops.h"
 #include "global_definitions.h"
 #include "sdkconfig.h"
 #include "esp_system.h"
 #include "esp_partition.h"
+#include "esp_ota_ops.h"
 
 #include "freertos/FreeRTOS.h"
 #include "event_groups.h"
@@ -11,8 +11,8 @@
 
 #include "sys/socket.h"
 
-#define BUFFSIZE 1500
-#define TEXT_BUFFSIZE 1024
+#define BUFF_SIZE 1500
+#define TEXT_BUFF_SIZE 1024
 
 typedef enum esp_ota_firm_state {
    ESP_OTA_INIT = 0,

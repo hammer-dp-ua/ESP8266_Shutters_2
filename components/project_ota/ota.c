@@ -1,9 +1,9 @@
 #include "ota.h"
 
 // OTA data write buffer ready to write to the flash
-static char ota_write_data[BUFFSIZE + 1] = { 0 };
+static char ota_write_data[BUFF_SIZE + 1] = {0 };
 // Packet receive buffer
-static char text[BUFFSIZE + 1] = { 0 };
+static char text[BUFF_SIZE + 1] = {0 };
 // Image total length
 static int binary_file_length = 0;
 // socket id
@@ -286,10 +286,10 @@ static void update_firmware_task(void *pvParameter) {
 
    // deal with all receive packet
    while (flag) {
-      memset(text, 0, TEXT_BUFFSIZE);
-      memset(ota_write_data, 0, BUFFSIZE);
+      memset(text, 0, TEXT_BUFF_SIZE);
+      memset(ota_write_data, 0, BUFF_SIZE);
 
-      int buff_len = recv(socket_id, text, TEXT_BUFFSIZE, 0);
+      int buff_len = recv(socket_id, text, TEXT_BUFF_SIZE, 0);
 
       if (buff_len < 0) { // receive error
          #ifdef ALLOW_USE_PRINTF
