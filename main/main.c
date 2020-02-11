@@ -28,8 +28,6 @@ static os_timer_t status_sender_timer_g;
 static os_timer_t shutters_activity_g;
 static os_timer_t blink_on_shutters_activity_g;
 
-static EventGroupHandle_t general_event_group_g;
-
 static SemaphoreHandle_t wirelessNetworkActionsSemaphore_g;
 
 static TaskHandle_t tcp_server_task_g;
@@ -42,10 +40,6 @@ static void start_100milliseconds_counter() {
    os_timer_disarm(&milliseconds_time_serv_g);
    os_timer_setfn(&milliseconds_time_serv_g, (os_timer_func_t *) milliseconds_counter, NULL);
    os_timer_arm(&milliseconds_time_serv_g, 1000 / MILLISECONDS_COUNTER_DIVIDER, true); // 1000/10 = 100 ms
-}
-
-static bool is_being_updated() {
-   return (xEventGroupGetBits(general_event_group_g) & UPDATE_FIRMWARE_FLAG);
 }
 
 static void scan_access_point_task() {
@@ -108,7 +102,7 @@ static void blink_both_leds() {
 static void start_both_leds_blinking() {
    os_timer_disarm(&blink_both_leds_g);
    os_timer_setfn(&blink_both_leds_g, (os_timer_func_t *) blink_both_leds, NULL);
-   os_timer_arm(&blink_both_leds_g, 2000 / MILLISECONDS_COUNTER_DIVIDER, true); // 200 ms
+   os_timer_arm(&blink_both_leds_g, 200, true); // 200 ms
 }
 
 static void stop_both_leds_blinking() {
@@ -146,11 +140,11 @@ static void on_response_error() {
    repetitive_request_errors_counter_g++;
    errors_counter_g++;
    gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 0);
-   xEventGroupSetBits(general_event_group_g, REQUEST_ERROR_OCCURRED_FLAG);
+   save_request_error_occurred_event();
 }
 
 void send_status_info_task() {
-   xEventGroupSetBits(general_event_group_g, STATUS_INFO_IS_BEING_SENT_FLAG);
+   save_sending_status_info_event();
    xSemaphoreTake(wirelessNetworkActionsSemaphore_g, portMAX_DELAY);
    blink_on_send(SERVER_AVAILABILITY_STATUS_LED_PIN);
    for (unsigned char i = 0; i < 2; i++) {
@@ -191,7 +185,7 @@ void send_status_info_task() {
          1, shutter_1_state.state, 2, shutter_2_state.state);
    #endif
 
-   if ((xEventGroupGetBits(general_event_group_g) & FIRST_STATUS_INFO_SENT_FLAG) == 0) {
+   if (!is_first_status_info_sent()) {
       char build_timestamp_filled[30];
       snprintf(build_timestamp_filled, 30, "%s", __TIMESTAMP__);
       build_timestamp = build_timestamp_filled;
@@ -292,8 +286,8 @@ void send_status_info_task() {
          repetitive_request_errors_counter_g = 0;
          gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 1);
 
-         if ((xEventGroupGetBits(general_event_group_g) & FIRST_STATUS_INFO_SENT_FLAG) == 0) {
-            xEventGroupSetBits(general_event_group_g, FIRST_STATUS_INFO_SENT_FLAG);
+         if (!is_first_status_info_sent()) {
+            save_first_status_info_sent_event();
 
             unsigned int overwrite_value = 0xFFFF;
             rtc_mem_write(SYSTEM_RESTART_REASON_TYPE_RTC_ADDRESS, &overwrite_value, 4);
@@ -304,7 +298,7 @@ void send_status_info_task() {
          #endif
 
          if (strstr(response, UPDATE_FIRMWARE)) {
-            xEventGroupSetBits(general_event_group_g, UPDATE_FIRMWARE_FLAG);
+            save_being_updated_event();
             start_both_leds_blinking();
 
             SYSTEM_RESTART_REASON_TYPE reason = SOFTWARE_UPGRADE;
@@ -322,16 +316,15 @@ void send_status_info_task() {
       FREE(response);
    }
 
-   xEventGroupClearBits(general_event_group_g, STATUS_INFO_IS_BEING_SENT_FLAG);
+   clear_sending_status_info_event();
    xSemaphoreGive(wirelessNetworkActionsSemaphore_g);
    vTaskDelete(NULL);
 }
 
 static void send_status_info() {
    bool not_connected_to_wi_fi = !is_connected_to_wifi();
-   bool is_being_sent = (xEventGroupGetBits(general_event_group_g) & STATUS_INFO_IS_BEING_SENT_FLAG) > 0;
 
-   if (not_connected_to_wi_fi || is_being_sent || is_being_updated()) {
+   if (not_connected_to_wi_fi || is_status_info_being_sent() || is_being_updated()) {
       return;
    }
 
@@ -383,9 +376,9 @@ static void stop_blinking_on_shutters_activity() {
    }
 }
 
-static void stop_shutter_activity() {
+void stop_shutter_activity(void *timer_arg) {
    #ifdef ALLOW_USE_PRINTF
-   printf("\nStopping shutters activity...\n");
+   printf("\n\nStopping shutters activity...\n");
    #endif
 
    #ifdef ROOM_SHUTTER
@@ -466,7 +459,8 @@ static void open_shutter(unsigned char opening_time_sec, unsigned char shutter_n
    opening_time_ms *= 1000;
 
    #ifdef ALLOW_USE_PRINTF
-   printf("\nOpening shutter: %u, opening time: %ums, send request: %u\n", shutter_no, opening_time_ms, also_send_request);
+   printf("\nOpening shutter: %u, opening time: %ums, send request: %u\n",
+         shutter_no, opening_time_ms, also_send_request);
    #endif
 
    os_timer_disarm(&shutters_activity_g);
@@ -519,12 +513,15 @@ static void close_shutter(unsigned char closing_time_sec, unsigned char shutter_
    closing_time_ms *= 1000;
 
    #ifdef ALLOW_USE_PRINTF
-   printf("\nClosing shutter: %u, closing time: %ums, send request: %u\n", shutter_no, closing_time_ms, also_send_request);
+   printf("\nClosing shutter: %u, closing time: %ums, send request: %u\n",
+         shutter_no, closing_time_ms, also_send_request);
    #endif
 
-   os_timer_disarm(&shutters_activity_g);
-   os_timer_setfn(&shutters_activity_g, (os_timer_func_t *) stop_shutter_activity, NULL);
-   os_timer_arm(&shutters_activity_g, closing_time_ms, false);
+   if (shutter_no == 1) {
+      os_timer_disarm(&shutters_activity_g);
+      os_timer_setfn(&shutters_activity_g, (os_timer_func_t *) stop_shutter_activity, NULL);
+      os_timer_arm(&shutters_activity_g, closing_time_ms, false);
+   }
 
    #ifdef ROOM_SHUTTER
    shutters_states_g[0].shutter_no = shutter_no;
@@ -943,10 +940,10 @@ static void init_shutters_states() {
 }
 
 void app_main(void) {
-   general_event_group_g = xEventGroupCreate();
-
    pins_config();
    uart_config();
+
+   init_events();
 
    start_both_leds_blinking();
    vTaskDelay(3000 / portTICK_RATE_MS);

@@ -1,16 +1,5 @@
 #include "utils.h"
 
-// FreeRTOS event group to signal when we are connected
-// Max 24 bits when configUSE_16_BIT_TICKS is 0
-static EventGroupHandle_t wifi_event_group;
-
-/*
- * The event group allows multiple bits for each event,
- * but we only care about one event - are we connected
- * to the AP with an IP?
- */
-static const int WIFI_CONNECTED_BIT = (1 << 0);
-
 static void (*on_wifi_connected_g)();
 static void (*on_wifi_disconnected_g)();
 static void (*on_wifi_connection_g)();
@@ -137,7 +126,7 @@ static esp_err_t esp_event_handler(void *ctx, system_event_t *event) {
          #endif
 
          os_timer_disarm(&wi_fi_reconnection_timer_g);
-         xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_BIT);
+         save_connected_to_wifi_event();
          on_wifi_connected_g();
          break;
       case SYSTEM_EVENT_STA_CONNECTED:
@@ -159,7 +148,7 @@ static esp_err_t esp_event_handler(void *ctx, system_event_t *event) {
 
          on_wifi_disconnected_g();
          on_wifi_connection_g();
-         xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT);
+         clear_connected_to_wifi_event();
 
          os_timer_disarm(&wi_fi_reconnection_timer_g);
          os_timer_setfn(&wi_fi_reconnection_timer_g, (os_timer_func_t *) connect_to_ap, NULL);
@@ -176,8 +165,6 @@ void wifi_init_sta(void (*on_connected)(), void (*on_disconnected)(), void (*on_
    on_wifi_connected_g = on_connected;
    on_wifi_disconnected_g = on_disconnected;
    on_wifi_connection_g = on_connection;
-
-   wifi_event_group = xEventGroupCreate();
 
    ESP_ERROR_CHECK(esp_event_loop_init(esp_event_handler, NULL))
 
@@ -201,10 +188,6 @@ void wifi_init_sta(void (*on_connected)(), void (*on_disconnected)(), void (*on_
 
 void disable_wifi_event_handler() {
    esp_event_loop_set_cb(NULL, NULL);
-}
-
-bool is_connected_to_wifi() {
-   return (xEventGroupGetBits(wifi_event_group) & WIFI_CONNECTED_BIT) == WIFI_CONNECTED_BIT;
 }
 
 /**

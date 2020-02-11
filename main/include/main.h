@@ -17,9 +17,9 @@
 #include "string.h"
 
 #include "utils.h"
-#include "event_groups.h"
 #include "global_definitions.h"
 #include "malloc_logger.h"
+#include "events.h"
 
 #ifndef MAIN_HEADER
 #define MAIN_HEADER
@@ -42,13 +42,8 @@
 #define RELAY_PIN_ENABLED  1
 #define RELAY_PIN_DISABLED 0
 
-#define FIRST_STATUS_INFO_SENT_FLAG    (1 << 0)
-#define UPDATE_FIRMWARE_FLAG           (1 << 1)
-#define REQUEST_ERROR_OCCURRED_FLAG    (1 << 2)
-#define STATUS_INFO_IS_BEING_SENT_FLAG (1 << 3)
-
-#define ERRORS_CHECKER_INTERVAL_MS (10 * 1000)
-#define STATUS_REQUESTS_SEND_INTERVAL_MS (60 * 1000)
+#define ERRORS_CHECKER_INTERVAL_MS        (10 * 1000)
+#define STATUS_REQUESTS_SEND_INTERVAL_MS  (60 * 1000)
 
 #define MILLISECONDS_COUNTER_DIVIDER 10
 

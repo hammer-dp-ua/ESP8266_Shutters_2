@@ -4,12 +4,12 @@
 #include "device_settings.h"
 #include "global_definitions.h"
 #include "malloc_logger.h"
+#include "events.h"
+
 #include "esp_err.h"
 #include "esp_event_loop.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
-#include "FreeRTOS.h"
-#include "event_groups.h"
 #include "string.h"
 #include "lwip/ip4_addr.h"
 #include "lwip/sys.h"
@@ -22,7 +22,6 @@
 
 void *set_string_parameters(const char string[], const char *parameters[]);
 void wifi_init_sta(void (*on_connected)(), void (*on_disconnected)(), void (*on_connection)());
-bool is_connected_to_wifi();
 void rtc_mem_read(unsigned int addr, void *dst, unsigned int length);
 void rtc_mem_write(unsigned int dst, const void *src, unsigned int length);
 int connect_to_http_server();
