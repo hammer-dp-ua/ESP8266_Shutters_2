@@ -8,7 +8,6 @@
  */
 
 #include "main.h"
-#include "ota.h"
 
 static unsigned int milliseconds_counter_g;
 static int signal_strength_g;
@@ -21,12 +20,12 @@ static unsigned int repetitive_tcp_server_errors_counter_g = 0;
 static shutter_state shutters_states_g[2];
 static int opened_sockets_g[2];
 
-static os_timer_t milliseconds_time_serv_g;
-static os_timer_t errors_checker_timer_g;
-static os_timer_t blink_both_leds_g;
-static os_timer_t status_sender_timer_g;
-static os_timer_t shutters_activity_g;
-static os_timer_t blink_on_shutters_activity_g;
+static esp_timer_handle_t milliseconds_time_serv_g;
+static esp_timer_handle_t errors_checker_timer_g;
+static esp_timer_handle_t blink_both_leds_timer_g;
+static esp_timer_handle_t status_sender_timer_g;
+static esp_timer_handle_t stop_shutters_activity_timer_g;
+static esp_timer_handle_t blink_on_shutters_activity_g;
 
 static SemaphoreHandle_t wirelessNetworkActionsSemaphore_g;
 
@@ -37,9 +36,12 @@ static void milliseconds_counter() {
 }
 
 static void start_100milliseconds_counter() {
-   os_timer_disarm(&milliseconds_time_serv_g);
-   os_timer_setfn(&milliseconds_time_serv_g, (os_timer_func_t *) milliseconds_counter, NULL);
-   os_timer_arm(&milliseconds_time_serv_g, 1000 / MILLISECONDS_COUNTER_DIVIDER, true); // 1000/10 = 100 ms
+   esp_timer_create_args_t timer_config = {
+         .callback = &milliseconds_counter
+   };
+
+   ESP_ERROR_CHECK(esp_timer_create(&timer_config, &milliseconds_time_serv_g))
+   ESP_ERROR_CHECK(esp_timer_start_periodic(milliseconds_time_serv_g, 1000 / MILLISECONDS_COUNTER_DIVIDER * 1000)) // 1000/10 = 100 ms
 }
 
 static void scan_access_point_task() {
@@ -49,12 +51,10 @@ static void scan_access_point_task() {
    unsigned short scanned_access_points_amount = 1;
    wifi_ap_record_t scanned_access_points[1];
 
-   //scan_config.ssid = (unsigned char *) ACCESS_POINT_NAME;
-   //scan_config.bssid = 0;
-   //scan_config.channel = 0;
-   //scan_config.show_hidden = false;
-   scan_config.show_hidden = true;
-   scan_config.scan_type = WIFI_SCAN_TYPE_ACTIVE;
+   scan_config.ssid = (unsigned char *) ACCESS_POINT_NAME;
+   scan_config.bssid = 0;
+   scan_config.channel = 0;
+   scan_config.show_hidden = false;
 
    for (;;) {
       #ifdef ALLOW_USE_PRINTF
@@ -89,7 +89,7 @@ static void scan_access_point_task() {
    }
 }
 
-static void blink_both_leds() {
+static void blink_both_leds_cb() {
    if (gpio_get_level(AP_CONNECTION_STATUS_LED_PIN)) {
       gpio_set_level(AP_CONNECTION_STATUS_LED_PIN, 0);
       gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 1);
@@ -99,14 +99,20 @@ static void blink_both_leds() {
    }
 }
 
-static void start_both_leds_blinking() {
-   os_timer_disarm(&blink_both_leds_g);
-   os_timer_setfn(&blink_both_leds_g, (os_timer_func_t *) blink_both_leds, NULL);
-   os_timer_arm(&blink_both_leds_g, 200, true); // 200 ms
+static void init_both_leds_blinking_timer() {
+   esp_timer_create_args_t timer_config = {
+         .callback = &blink_both_leds_cb
+   };
+
+   ESP_ERROR_CHECK(esp_timer_create(&timer_config, &blink_both_leds_timer_g))
+}
+
+static void start_both_leds_blinking(unsigned int ms) {
+   ESP_ERROR_CHECK(esp_timer_start_periodic(blink_both_leds_timer_g, ms * 1000))
 }
 
 static void stop_both_leds_blinking() {
-   os_timer_disarm(&blink_both_leds_g);
+   ESP_ERROR_CHECK(esp_timer_stop(blink_both_leds_timer_g))
 
    gpio_set_level(AP_CONNECTION_STATUS_LED_PIN, 0);
    gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 0);
@@ -299,7 +305,7 @@ void send_status_info_task() {
 
          if (strstr(response, UPDATE_FIRMWARE)) {
             save_being_updated_event();
-            start_both_leds_blinking();
+            start_both_leds_blinking(100);
 
             SYSTEM_RESTART_REASON_TYPE reason = SOFTWARE_UPGRADE;
             rtc_mem_write(SYSTEM_RESTART_REASON_TYPE_RTC_ADDRESS, &reason, 4);
@@ -322,9 +328,7 @@ void send_status_info_task() {
 }
 
 static void send_status_info() {
-   bool not_connected_to_wi_fi = !is_connected_to_wifi();
-
-   if (not_connected_to_wi_fi || is_status_info_being_sent() || is_being_updated()) {
+   if (!is_connected_to_wifi() || is_status_info_being_sent() || is_being_updated()) {
       return;
    }
 
@@ -332,12 +336,29 @@ static void send_status_info() {
 }
 
 static void schedule_sending_status_info(unsigned int timeout_ms) {
-   os_timer_disarm(&status_sender_timer_g);
-   os_timer_setfn(&status_sender_timer_g, (os_timer_func_t *) send_status_info, NULL);
-   os_timer_arm(&status_sender_timer_g, timeout_ms, true);
+   esp_timer_create_args_t timer_config = {
+         .callback = &send_status_info
+   };
+
+   ESP_ERROR_CHECK(esp_timer_create(&timer_config, &status_sender_timer_g))
+   ESP_ERROR_CHECK(esp_timer_start_periodic(status_sender_timer_g, timeout_ms * 1000))
 }
 
-static void blink_on_shutters_opening() {
+static void start_blink_on_shutters_activity_timer(esp_timer_cb_t callback_param) {
+   if (blink_on_shutters_activity_g != NULL) {
+      ESP_ERROR_CHECK(esp_timer_stop(blink_on_shutters_activity_g))
+      ESP_ERROR_CHECK(esp_timer_delete(blink_on_shutters_activity_g))
+      blink_on_shutters_activity_g = NULL;
+   }
+
+   esp_timer_create_args_t timer_config = {
+         .callback = callback_param
+   };
+   ESP_ERROR_CHECK(esp_timer_create(&timer_config, &blink_on_shutters_activity_g))
+   ESP_ERROR_CHECK(esp_timer_start_periodic(blink_on_shutters_activity_g, 200 * 1000))
+}
+
+static void blink_on_shutters_opening_cb() {
    if (gpio_get_level(AP_CONNECTION_STATUS_LED_PIN)) {
       gpio_set_level(AP_CONNECTION_STATUS_LED_PIN, 0);
    } else {
@@ -346,12 +367,10 @@ static void blink_on_shutters_opening() {
 }
 
 static void start_blinking_on_shutters_opening() {
-   os_timer_disarm(&blink_on_shutters_activity_g);
-   os_timer_setfn(&blink_on_shutters_activity_g, (os_timer_func_t *) blink_on_shutters_opening, NULL);
-   os_timer_arm(&blink_on_shutters_activity_g, 200, true);
+   start_blink_on_shutters_activity_timer(&blink_on_shutters_opening_cb);
 }
 
-static void blink_on_shutters_closing() {
+static void blink_on_shutters_closing_cb() {
    if (gpio_get_level(SERVER_AVAILABILITY_STATUS_LED_PIN)) {
       gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 0);
    } else {
@@ -360,13 +379,11 @@ static void blink_on_shutters_closing() {
 }
 
 static void start_blinking_on_shutters_closing() {
-   os_timer_disarm(&blink_on_shutters_activity_g);
-   os_timer_setfn(&blink_on_shutters_activity_g, (os_timer_func_t *) blink_on_shutters_closing, NULL);
-   os_timer_arm(&blink_on_shutters_activity_g, 200, true);
+   start_blink_on_shutters_activity_timer(&blink_on_shutters_closing_cb);
 }
 
 static void stop_blinking_on_shutters_activity() {
-   os_timer_disarm(&blink_on_shutters_activity_g);
+   ESP_ERROR_CHECK(esp_timer_stop(blink_on_shutters_activity_g))
    gpio_set_level(AP_CONNECTION_STATUS_LED_PIN, 0);
    gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 0);
 
@@ -376,7 +393,7 @@ static void stop_blinking_on_shutters_activity() {
    }
 }
 
-void stop_shutter_activity(void *timer_arg) {
+static void stop_shutters_activity_task() {
    #ifdef ALLOW_USE_PRINTF
    printf("\n\nStopping shutters activity...\n");
    #endif
@@ -452,6 +469,12 @@ void stop_shutter_activity(void *timer_arg) {
 
    stop_blinking_on_shutters_activity();
    send_status_info();
+   vTaskDelete(NULL);
+}
+
+// Callback to be invoked by timer
+static void stop_shutters_activity_cb() {
+   xTaskCreate(stop_shutters_activity_task, "stop_shutters", configMINIMAL_STACK_SIZE * 2, NULL, tskIDLE_PRIORITY, NULL);
 }
 
 static void open_shutter(unsigned char opening_time_sec, unsigned char shutter_no, bool also_send_request) {
@@ -463,9 +486,8 @@ static void open_shutter(unsigned char opening_time_sec, unsigned char shutter_n
          shutter_no, opening_time_ms, also_send_request);
    #endif
 
-   os_timer_disarm(&shutters_activity_g);
-   os_timer_setfn(&shutters_activity_g, (os_timer_func_t *) stop_shutter_activity, NULL);
-   os_timer_arm(&shutters_activity_g, opening_time_ms, false);
+   ESP_ERROR_CHECK(esp_timer_stop(stop_shutters_activity_timer_g))
+   ESP_ERROR_CHECK(esp_timer_start_once(stop_shutters_activity_timer_g, opening_time_ms * 1000))
 
    #ifdef ROOM_SHUTTER
    shutters_states_g[0].shutter_no = 0;
@@ -517,11 +539,8 @@ static void close_shutter(unsigned char closing_time_sec, unsigned char shutter_
          shutter_no, closing_time_ms, also_send_request);
    #endif
 
-   if (shutter_no == 1) {
-      os_timer_disarm(&shutters_activity_g);
-      os_timer_setfn(&shutters_activity_g, (os_timer_func_t *) stop_shutter_activity, NULL);
-      os_timer_arm(&shutters_activity_g, closing_time_ms, false);
-   }
+   ESP_ERROR_CHECK(esp_timer_stop(stop_shutters_activity_timer_g))
+   ESP_ERROR_CHECK(esp_timer_start_once(stop_shutters_activity_timer_g, closing_time_ms * 1000))
 
    #ifdef ROOM_SHUTTER
    shutters_states_g[0].shutter_no = shutter_no;
@@ -862,7 +881,7 @@ static void uart_config() {
 /**
  * Created as a workaround to handle unknown issues.
  */
-void check_errors_amount() {
+static void check_errors_amount() {
    bool restart = false;
 
    if (repetitive_request_errors_counter_g >= MAX_REPETITIVE_ALLOWED_ERRORS_AMOUNT) {
@@ -900,6 +919,11 @@ void check_errors_amount() {
 }
 
 static void init_shutters_states() {
+   esp_timer_create_args_t shutters_activity_timer_config = {
+         .callback = &stop_shutters_activity_cb
+   };
+   ESP_ERROR_CHECK(esp_timer_create(&shutters_activity_timer_config, &stop_shutters_activity_timer_g))
+
    unsigned char closing_time_sec = 30;
    esp_reset_reason_t rst_info = esp_reset_reason();
 
@@ -939,13 +963,23 @@ static void init_shutters_states() {
    #endif
 }
 
+static void schedule_errors_checker(unsigned int timeout_ms) {
+   esp_timer_create_args_t timer_config = {
+         .callback = &check_errors_amount
+   };
+
+   ESP_ERROR_CHECK(esp_timer_create(&timer_config, &errors_checker_timer_g))
+   ESP_ERROR_CHECK(esp_timer_start_periodic(errors_checker_timer_g, timeout_ms * 1000))
+}
+
 void app_main(void) {
    pins_config();
    uart_config();
 
    init_events();
 
-   start_both_leds_blinking();
+   init_both_leds_blinking_timer();
+   start_both_leds_blinking(200);
    vTaskDelay(3000 / portTICK_RATE_MS);
    stop_both_leds_blinking();
 
@@ -972,9 +1006,7 @@ void app_main(void) {
 
    xTaskCreate(scan_access_point_task, "scan_access_point_task", configMINIMAL_STACK_SIZE * 3, NULL, 1, NULL);
 
-   os_timer_setfn(&errors_checker_timer_g, (os_timer_func_t *) check_errors_amount, NULL);
-   os_timer_arm(&errors_checker_timer_g, ERRORS_CHECKER_INTERVAL_MS, true);
-
+   schedule_errors_checker(ERRORS_CHECKER_INTERVAL_MS);
    schedule_sending_status_info(STATUS_REQUESTS_SEND_INTERVAL_MS);
 
    start_100milliseconds_counter();

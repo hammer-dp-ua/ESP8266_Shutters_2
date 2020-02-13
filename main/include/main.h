@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <esp_timer.h>
 #include "esp_system.h"
 
 #include "portmacro.h"
@@ -20,6 +21,7 @@
 #include "global_definitions.h"
 #include "malloc_logger.h"
 #include "events.h"
+#include "ota.h"
 
 #ifndef MAIN_HEADER
 #define MAIN_HEADER
@@ -101,7 +103,6 @@ const char STATUS_INFO_REQUEST_PAYLOAD_TEMPLATE[] =
       "}";
 const char UPDATE_FIRMWARE[] = "\"updateFirmware\":true";
 
-static void blink_both_leds();
 static void stop_both_leds_blinking();
 static void close_opened_sockets();
 static void start_blinking_on_shutters_opening();

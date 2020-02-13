@@ -219,19 +219,7 @@ static void update_firmware_task(void *pvParameter) {
    #endif
 
    const char *request_parameters[] = {"", SERVER_IP_ADDRESS, NULL};
-
-   if (strcasecmp(update_partition->label, "ota_0") == 0) {
-      request_parameters[0] = "firmware.app1.bin";
-   } else if (strcasecmp(update_partition->label, "ota_1") == 0) {
-      request_parameters[0] = "firmware.app2.bin";
-   } else {
-      #ifdef ALLOW_USE_PRINTF
-      printf("\nIllegal partition label: %s\n", update_partition->label);
-      #endif
-
-      task_fatal_error();
-   }
-
+   request_parameters[0] = PROJECT_NAME".bin";
    char *http_request = set_string_parameters(FIRMWARE_UPDATE_GET_REQUEST, request_parameters);
 
    #ifdef ALLOW_USE_PRINTF
