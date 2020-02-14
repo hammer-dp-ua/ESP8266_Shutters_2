@@ -1,19 +1,19 @@
 #ifndef DEVICE_SETTINGS
 #define DEVICE_SETTINGS
 
-//#define ROOM_SHUTTER
-#define KITCHEN_SHUTTER
-#define TESTING
+#define ROOM_SHUTTER
+//#define KITCHEN_SHUTTER
+//#define TESTING
 
 // const are saved at 40200000h (flash memory)
 #ifdef TESTING
 static const char OWN_IP_ADDRESS[] = "192.168.0.90";
 static const char DEVICE_NAME[] = "Testing";
 #elif defined(KITCHEN_SHUTTER)
-static const char OWN_IP_ADDRESS[] = "192.168.0.29"; // 1MB Flash
+static const char OWN_IP_ADDRESS[] = "192.168.0.29"; // 4MB Flash
 static const char DEVICE_NAME[] = "Kitchen shutter";
 #elif defined(ROOM_SHUTTER)
-static const char OWN_IP_ADDRESS[] = "192.168.0.27"; // 1MB Flash
+static const char OWN_IP_ADDRESS[] = "192.168.0.27"; // 4MB Flash
 static const char DEVICE_NAME[] = "Room shutter";
 #endif
 

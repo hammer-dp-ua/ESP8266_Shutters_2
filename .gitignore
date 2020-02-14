@@ -2,3 +2,4 @@
 /build
 /_sdkconfig
 /cmake-build-debug
+/components/project_common/include/global_definitions.h

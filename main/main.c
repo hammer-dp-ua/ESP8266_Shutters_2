@@ -305,7 +305,7 @@ void send_status_info_task() {
 
          if (strstr(response, UPDATE_FIRMWARE)) {
             save_being_updated_event();
-            start_both_leds_blinking(100);
+            start_both_leds_blinking(200);
 
             SYSTEM_RESTART_REASON_TYPE reason = SOFTWARE_UPGRADE;
             rtc_mem_write(SYSTEM_RESTART_REASON_TYPE_RTC_ADDRESS, &reason, 4);
@@ -931,8 +931,7 @@ static void init_shutters_states() {
    unsigned int saved_shutter_state;
    rtc_mem_read(ROOM_SHUTTER_STATE_RTC_ADDRESS, &saved_shutter_state, 4);
 
-   if (saved_shutter_state == 0 || saved_shutter_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON ||
-         rst_info == ESP_RST_EXT) {
+   if (saved_shutter_state == 0 || saved_shutter_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON) {
       close_shutter(closing_time_sec, 0, false);
    } else {
       shutters_states_g[0].shutter_no = 0;
@@ -946,15 +945,13 @@ static void init_shutters_states() {
    unsigned int saved_shutter_2_state;
    rtc_mem_read(KITCHEN_SHUTTER_2_STATE_RTC_ADDRESS, &saved_shutter_2_state, 4);
 
-   if (saved_shutter_1_state == 0 || saved_shutter_1_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON ||
-         rst_info == ESP_RST_EXT) {
+   if (saved_shutter_1_state == 0 || saved_shutter_1_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON) {
       close_shutter(closing_time_sec, 1, false);
    } else {
       shutters_states_g[0].shutter_no = 1;
       shutters_states_g[0].state = saved_shutter_1_state;
    }
-   if (saved_shutter_2_state == 0 || saved_shutter_2_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON ||
-         rst_info == ESP_RST_EXT) {
+   if (saved_shutter_2_state == 0 || saved_shutter_2_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON) {
       close_shutter(closing_time_sec, 2, false);
    } else {
       shutters_states_g[1].shutter_no = 2;
@@ -979,8 +976,8 @@ void app_main(void) {
    init_events();
 
    init_both_leds_blinking_timer();
-   start_both_leds_blinking(200);
-   vTaskDelay(3000 / portTICK_RATE_MS);
+   start_both_leds_blinking(100);
+   vTaskDelay(5000 / portTICK_RATE_MS);
    stop_both_leds_blinking();
 
    #ifdef ALLOW_USE_PRINTF
