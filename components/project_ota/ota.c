@@ -9,7 +9,7 @@ static int binary_file_length = 0;
 // socket id
 static int socket_id = -1;
 
-static os_timer_t upgrade_timer;
+static esp_timer_handle_t upgrade_timer;
 
 static void __attribute__((noreturn)) task_fatal_error() {
    #ifdef ALLOW_USE_PRINTF
@@ -367,9 +367,11 @@ void update_firmware() {
    // Resolves an exception error when calling esp_restart() in the end of updating
    disable_wifi_event_handler();
 
-   os_timer_disarm(&upgrade_timer);
-   os_timer_setfn(&upgrade_timer, (os_timer_func_t *) on_update_timeout, NULL);
-   os_timer_arm(&upgrade_timer, 300000, false);
+   esp_timer_create_args_t timer_config = {
+         .callback = &on_update_timeout
+   };
+   ESP_ERROR_CHECK(esp_timer_create(&timer_config, &upgrade_timer))
+   ESP_ERROR_CHECK(esp_timer_start_once(upgrade_timer, 300000 * 1000))
 
    xTaskCreate(update_firmware_task, "update_firmware_task", configMINIMAL_STACK_SIZE * 6, NULL, 5, NULL);
 }

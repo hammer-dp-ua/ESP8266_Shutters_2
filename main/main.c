@@ -919,10 +919,10 @@ static void check_errors_amount() {
 }
 
 static void init_shutters_states() {
-   esp_timer_create_args_t shutters_activity_timer_config = {
+   esp_timer_create_args_t timer_config = {
          .callback = &stop_shutters_activity_cb
    };
-   ESP_ERROR_CHECK(esp_timer_create(&shutters_activity_timer_config, &stop_shutters_activity_timer_g))
+   ESP_ERROR_CHECK(esp_timer_create(&timer_config, &stop_shutters_activity_timer_g))
 
    unsigned char closing_time_sec = 30;
    esp_reset_reason_t rst_info = esp_reset_reason();
@@ -931,7 +931,9 @@ static void init_shutters_states() {
    unsigned int saved_shutter_state;
    rtc_mem_read(ROOM_SHUTTER_STATE_RTC_ADDRESS, &saved_shutter_state, 4);
 
-   if (saved_shutter_state == 0 || saved_shutter_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON) {
+   if (saved_shutter_state == 0 || saved_shutter_state > SHUTTER_CLOSED ||
+         saved_shutter_state == SHUTTER_CLOSING || saved_shutter_state == SHUTTER_OPENING ||
+         rst_info == ESP_RST_POWERON) {
       close_shutter(closing_time_sec, 0, false);
    } else {
       shutters_states_g[0].shutter_no = 0;
@@ -945,13 +947,17 @@ static void init_shutters_states() {
    unsigned int saved_shutter_2_state;
    rtc_mem_read(KITCHEN_SHUTTER_2_STATE_RTC_ADDRESS, &saved_shutter_2_state, 4);
 
-   if (saved_shutter_1_state == 0 || saved_shutter_1_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON) {
+   if (saved_shutter_1_state == 0 || saved_shutter_1_state > SHUTTER_CLOSED ||
+         saved_shutter_1_state == SHUTTER_CLOSING || saved_shutter_1_state == SHUTTER_OPENING ||
+         rst_info == ESP_RST_POWERON) {
       close_shutter(closing_time_sec, 1, false);
    } else {
       shutters_states_g[0].shutter_no = 1;
       shutters_states_g[0].state = saved_shutter_1_state;
    }
-   if (saved_shutter_2_state == 0 || saved_shutter_2_state > SHUTTER_CLOSED || rst_info == ESP_RST_POWERON) {
+   if (saved_shutter_2_state == 0 || saved_shutter_2_state > SHUTTER_CLOSED ||
+         saved_shutter_2_state == SHUTTER_CLOSING || saved_shutter_2_state == SHUTTER_OPENING ||
+         rst_info == ESP_RST_POWERON) {
       close_shutter(closing_time_sec, 2, false);
    } else {
       shutters_states_g[1].shutter_no = 2;
@@ -986,6 +992,8 @@ void app_main(void) {
          running->label, running->type, running->subtype, running->address, running->size, __TIMESTAMP__);
    #endif
 
+   init_shutters_states();
+
    tcpip_adapter_init();
    tcpip_adapter_dhcpc_stop(TCPIP_ADAPTER_IF_STA); // Stop DHCP client
    tcpip_adapter_ip_info_t ip_info;
@@ -993,8 +1001,6 @@ void app_main(void) {
    ip_info.gw.addr = inet_addr(OWN_GETAWAY_ADDRESS);
    ip_info.netmask.addr = inet_addr(OWN_NETMASK);
    tcpip_adapter_set_ip_info(TCPIP_ADAPTER_IF_STA, &ip_info);
-
-   init_shutters_states();
 
    wirelessNetworkActionsSemaphore_g = xSemaphoreCreateBinary();
    xSemaphoreGive(wirelessNetworkActionsSemaphore_g);

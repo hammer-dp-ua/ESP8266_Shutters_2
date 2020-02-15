@@ -22,6 +22,7 @@
       <config projectName="Shutters" targetName="partition_table" />
       <config projectName="Shutters" targetName="__idf_esp_common" />
       <config projectName="Shutters" targetName="__idf_ota" />
+      <config projectName="Shutters" targetName="__idf_project_events" />
       <config projectName="Shutters" targetName="___idf_mdns" />
       <config projectName="Shutters" targetName="___idf_mbedtls" />
       <config projectName="Shutters" targetName="___idf_esp_http_client" />
@@ -57,13 +58,14 @@
       <config projectName="Shutters" targetName="___idf_libsodium" />
       <config projectName="Shutters" targetName="__idf_app_update" />
       <config projectName="Shutters" targetName="___idf_esp-wolfssl" />
+      <config projectName="Shutters" targetName="__idf_esp_ringbuf" />
       <config projectName="Shutters" targetName="__idf_openssl" />
       <config projectName="Shutters" targetName="___idf_nvs_flash" />
-      <config projectName="Shutters" targetName="__idf_esp_ringbuf" />
       <config projectName="Shutters" targetName="__idf_esp_gdbstub" />
       <config projectName="Shutters" targetName="__idf_log" />
       <config projectName="Shutters" targetName="__idf_build_target" />
       <config projectName="Shutters" targetName="___idf_main" />
+      <config projectName="Shutters" targetName="___idf_project_events" />
       <config projectName="Shutters" targetName="___idf_http_parser" />
       <config projectName="Shutters" targetName="___idf_tcpip_adapter" />
       <config projectName="Shutters" targetName="___idf_mqtt" />
@@ -104,6 +106,7 @@
       <config projectName="Shutters" targetName="__idf_jsmn" />
       <config projectName="Shutters" targetName="___idf_wpa_supplicant" />
       <config projectName="Shutters" targetName="___idf_esp-tls" />
+      <config projectName="Shutters" targetName="blank_ota_data" />
       <config projectName="Shutters" targetName="__idf_spi_ram" />
       <config projectName="Shutters" targetName="___idf_ota" />
       <config projectName="Shutters" targetName="__idf_coap" />
@@ -126,8 +129,8 @@
           <envs>
             <env name="IDF_PATH" value="C:\Users\USER\ESP8266\ESP8266_RTOS_SDK_latest" />
             <env name="PYTHON" value="C:\Python_2.7.17\python.exe" />
-            <env name="ESPPORT" value="COM9" />
-            <env name="PATH" value="C:\Users\USER\ESP8266\ESP8266_RTOS_SDK_latest\tools;C:\msys32\Git\cmd;C:\Users\USER\ESP8266\xtensa-lx106-elf-win32-1.22.0-100-ge567ec7-5.2.0\bin;C:\MinGW\bin" />
+            <env name="ESPPORT" value="COM8" />
+            <env name="PATH" value="C:\Users\USER\ESP8266\ESP8266_RTOS_SDK_latest\tools;C:\msys32\Git\cmd;C:\Users\USER\ESP8266\xtensa-lx106-elf-win32-1.22.0-100-ge567ec7-5.2.0\bin;C:\msys32\for_cmake_projects" />
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
       </configuration>
@@ -135,30 +138,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee34f94a-6f68-4cf4-8a66-2e61080d5a8a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/project_ota/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Shutters.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Shutters.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/common/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_common/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/common/include/device_settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_common/include/device_settings.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/common/include/global_definitions.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_common/include/global_definitions.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/malloc_logger/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/malloc_logger/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ota/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ota/include/ota.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_ota/include/ota.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ota/ota.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_ota/ota.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/utils/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_utils/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/utils/include/utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_utils/include/utils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/utils/utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_utils/utils.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/first_build_config.bat" beforeDir="false" afterPath="$PROJECT_DIR$/first_build_config.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/include/user_main.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/include/main.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/user_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdkconfig" beforeDir="false" afterPath="$PROJECT_DIR$/sdkconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/project_common/include/device_settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_common/include/device_settings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/project_ota/include/ota.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_ota/include/ota.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/project_ota/ota.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_ota/ota.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/include/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/include/main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,21 +183,22 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$APPLICATION_HOME_DIR$/bin/cmake/win/bin/cmake.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/components/states" />
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\common" />
-      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\malloc_logger" />
-      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\utils" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\states\include" />
       <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\common\include" />
       <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\malloc_logger" />
       <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\malloc_logger\include" />
       <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\utils" />
-      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\utils\include" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\states" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\common" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\malloc_logger" />
+      <recent name="C:\Users\USER\ESP8266_CLion\ESP8266_Shutters_2\components\utils" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.flash_all">
@@ -220,6 +206,11 @@
       <method v="2" />
     </configuration>
     <configuration name="flash_all" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="false" PROJECT_NAME="Shutters" TARGET_NAME="flash" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ota" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="false" PROJECT_NAME="Shutters" TARGET_NAME="app" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -237,7 +228,7 @@
       <option name="ADD_CONTENT_ROOTS" value="false" />
       <option name="ADD_SOURCE_ROOTS" value="false" />
       <option name="SCRIPT_NAME" value="esptool.py" />
-      <option name="PARAMETERS" value="--chip esp8266 --port COM9 erase_flash" />
+      <option name="PARAMETERS" value="--chip esp8266 --port COM8 erase_flash" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -247,6 +238,7 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.flash_all" />
+      <item itemvalue="CMake Application.ota" />
       <item itemvalue="Python.erase flash" />
     </list>
   </component>
@@ -279,7 +271,16 @@
       <workItem from="1581320796265" duration="4049000" />
       <workItem from="1581324866174" duration="1209000" />
       <workItem from="1581353683956" duration="3849000" />
-      <workItem from="1581358468308" duration="9316000" />
+      <workItem from="1581358468308" duration="14800000" />
+      <workItem from="1581412565688" duration="4312000" />
+      <workItem from="1581443077865" duration="6471000" />
+      <workItem from="1581458553511" duration="7860000" />
+      <workItem from="1581502324215" duration="3173000" />
+      <workItem from="1581539507306" duration="2656000" />
+      <workItem from="1581542785361" duration="1275000" />
+      <workItem from="1581614182924" duration="24248000" />
+      <workItem from="1581718127956" duration="9559000" />
+      <workItem from="1581772004769" duration="646000" />
     </task>
     <servers />
   </component>
@@ -305,50 +306,66 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="686" y="248" key="#app-flash/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581286493719" />
-    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581367226443">
+    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581730628002">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581367226443" />
+    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581730628002" />
     <state x="855" y="247" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1581118027135">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="855" y="247" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581118027135" />
-    <state x="686" y="248" key="#flash_all" timestamp="1581366206554">
+    <state x="686" y="248" key="#flash_all" timestamp="1581721408126">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="686" y="248" key="#flash_all/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581366206554" />
+    <state x="686" y="248" key="#flash_all/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581721408126" />
     <state x="686" y="154" key="#idf.py_help" timestamp="1581117241324">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="686" y="154" key="#idf.py_help/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581117241324" />
-    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog" timestamp="1581355175757">
+    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog" timestamp="1581730671815">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581355175757" />
+    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581730671815" />
     <state x="193" y="339" key="FileChooserDialogImpl" timestamp="1581324840223">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="193" y="339" key="FileChooserDialogImpl/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581324840223" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1581367234177">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1581731651548">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581367234177" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1581367234177">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581731651548" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1581731651548">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581367234177" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1581367234177">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581731651548" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1581731651548">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581367234177" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1581367234177">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581731651548" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1581731651548">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581367234177" />
-    <state x="220" y="110" width="1347" height="708" key="SettingsEditor" timestamp="1581355176713">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581731651548" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1581458303679">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="220" y="110" width="1347" height="708" key="SettingsEditor/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581355176713" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581458303679" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1581458303679">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581458303679" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1581458303679">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581458303679" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1581458303679">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581458303679" />
+    <state x="220" y="110" width="1347" height="708" key="SettingsEditor" timestamp="1581730672662">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="220" y="110" width="1347" height="708" key="SettingsEditor/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581730672662" />
     <state x="1162" y="235" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey" timestamp="1581322886964">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
