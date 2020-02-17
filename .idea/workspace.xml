@@ -129,7 +129,7 @@
           <envs>
             <env name="IDF_PATH" value="C:\Users\USER\ESP8266\ESP8266_RTOS_SDK_latest" />
             <env name="PYTHON" value="C:\Python_2.7.17\python.exe" />
-            <env name="ESPPORT" value="COM8" />
+            <env name="ESPPORT" value="COM9" />
             <env name="PATH" value="C:\Users\USER\ESP8266\ESP8266_RTOS_SDK_latest\tools;C:\msys32\Git\cmd;C:\Users\USER\ESP8266\xtensa-lx106-elf-win32-1.22.0-100-ge567ec7-5.2.0\bin;C:\msys32\for_cmake_projects" />
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
@@ -139,9 +139,14 @@
   <component name="ChangeListManager">
     <list default="true" id="ee34f94a-6f68-4cf4-8a66-2e61080d5a8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/malloc_logger/include/malloc_logger.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/malloc_logger/include/malloc_logger.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/project_common/include/device_settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_common/include/device_settings.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/project_events/events.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_events/events.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/project_events/include/events.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_events/include/events.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/project_ota/include/ota.h" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_ota/include/ota.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/project_ota/ota.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_ota/ota.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/project_utils/utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/components/project_utils/utils.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/copy_to_upgrade.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main/include/main.h" beforeDir="false" afterPath="$PROJECT_DIR$/main/include/main.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.c" afterDir="false" />
     </list>
@@ -210,11 +215,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ota" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="false" PROJECT_NAME="Shutters" TARGET_NAME="app" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="erase flash" type="PythonConfigurationType" factoryName="Python">
       <module name="Shutters" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -238,7 +238,6 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.flash_all" />
-      <item itemvalue="CMake Application.ota" />
       <item itemvalue="Python.erase flash" />
     </list>
   </component>
@@ -281,6 +280,9 @@
       <workItem from="1581614182924" duration="24248000" />
       <workItem from="1581718127956" duration="9559000" />
       <workItem from="1581772004769" duration="646000" />
+      <workItem from="1581875459617" duration="5000" />
+      <workItem from="1581979322206" duration="684000" />
+      <workItem from="1581980079729" duration="1109000" />
     </task>
     <servers />
   </component>
@@ -306,10 +308,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="686" y="248" key="#app-flash/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581286493719" />
-    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581730628002">
+    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581980185715">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581730628002" />
+    <state x="661" y="72" width="1092" height="817" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581980185715" />
     <state x="855" y="247" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1581118027135">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -322,10 +324,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="686" y="154" key="#idf.py_help/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581117241324" />
-    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog" timestamp="1581730671815">
+    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog" timestamp="1581980193871">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581730671815" />
+    <state x="290" y="269" width="1244" height="554" key="EnvironmentVariablesDialog/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581980193871" />
     <state x="193" y="339" key="FileChooserDialogImpl" timestamp="1581324840223">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -362,10 +364,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581458303679" />
-    <state x="220" y="110" width="1347" height="708" key="SettingsEditor" timestamp="1581730672662">
+    <state x="220" y="110" width="1347" height="708" key="SettingsEditor" timestamp="1581980194603">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="220" y="110" width="1347" height="708" key="SettingsEditor/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581730672662" />
+    <state x="220" y="110" width="1347" height="708" key="SettingsEditor/0.0.1920.1040/-1280.64.1280.984@0.0.1920.1040" timestamp="1581980194603" />
     <state x="1162" y="235" key="com.intellij.tools.ToolSelectDialog.dimensionServiceKey" timestamp="1581322886964">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -141,11 +141,6 @@ static esp_err_t esp_event_handler(void *ctx, system_event_t *event) {
          printf("\nDisconnected from %s, reason: %u\n", event->event_info.disconnected.ssid, event->event_info.disconnected.reason);
          #endif
 
-         if (event->event_info.disconnected.reason == WIFI_REASON_NO_AP_FOUND) {
-            // Sometime occurs after firmware update or flash
-            esp_restart();
-         }
-
          on_wifi_disconnected_g();
          on_wifi_connection_g();
          clear_connected_to_wifi_event();

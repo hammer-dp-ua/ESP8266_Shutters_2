@@ -20,6 +20,14 @@ void save_request_error_occurred_event() {
    xEventGroupSetBits(flags_g, REQUEST_ERROR_OCCURRED_FLAG);
 }
 
+void clear_request_error_occurred_event() {
+   xEventGroupClearBits(flags_g, REQUEST_ERROR_OCCURRED_FLAG);
+}
+
+bool is_request_error_occurred() {
+   return xEventGroupGetBits(flags_g) & REQUEST_ERROR_OCCURRED_FLAG;
+}
+
 void save_sending_status_info_event() {
    xEventGroupSetBits(flags_g, STATUS_INFO_IS_BEING_SENT_FLAG);
 }
@@ -50,4 +58,12 @@ void clear_connected_to_wifi_event() {
 
 bool is_connected_to_wifi() {
    return xEventGroupGetBits(flags_g) & WIFI_CONNECTED_FLAG;
+}
+
+void save_delete_tcp_server_event() {
+   xEventGroupSetBits(flags_g, DELETE_TCP_SERVER_FLAG);
+}
+
+bool is_tcp_server_to_be_deleted() {
+   return xEventGroupGetBits(flags_g) & DELETE_TCP_SERVER_FLAG;
 }

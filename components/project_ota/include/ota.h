@@ -1,16 +1,10 @@
-#include "global_definitions.h"
-#include "sdkconfig.h"
-#include "esp_system.h"
-#include "esp_partition.h"
 #include "esp_ota_ops.h"
 #include "esp_timer.h"
-
 #include "freertos/FreeRTOS.h"
-#include "event_groups.h"
+#include "driver/gpio.h"
 
+#include "global_definitions.h"
 #include "utils.h"
-
-#include "sys/socket.h"
 
 #define BUFF_SIZE 1500
 #define TEXT_BUFF_SIZE 1024
@@ -48,4 +42,4 @@ static const char FIRMWARE_UPDATE_GET_REQUEST[] =
       "User-Agent: ESP8266\r\n"
       "Connection: close\r\n\r\n";
 
-void update_firmware();
+void update_firmware(unsigned int blinking_pin_1, unsigned int blinking_pin_2);

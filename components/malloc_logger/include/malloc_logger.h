@@ -1,9 +1,6 @@
-#include <stdio.h>
 #include "global_definitions.h"
 #include "device_settings.h"
-#include "esp_heap_caps.h"
 #include "esp_libc.h"
-#include "stdbool.h"
 
 #ifdef USE_MALLOC_LOGGER
    #define FREE(allocated_address_element_to_free) free_logger(allocated_address_element_to_free, __LINE__)

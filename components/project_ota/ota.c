@@ -9,6 +9,7 @@ static int binary_file_length = 0;
 // socket id
 static int socket_id = -1;
 
+unsigned int blinking_pin_1_g, blinking_pin_2_g;
 static esp_timer_handle_t upgrade_timer;
 
 static void __attribute__((noreturn)) task_fatal_error() {
@@ -201,7 +202,22 @@ static inline int esp_ota_firm_is_finished(esp_ota_firm_t *ota_firm) {
    return ota_firm->state == ESP_OTA_FINISH || ota_firm->state == ESP_OTA_RECVED;
 }
 
-static void update_firmware_task(void *pvParameter) {
+void blink() {
+   if (gpio_get_level(blinking_pin_1_g)) {
+      gpio_set_level(blinking_pin_1_g, 0);
+      gpio_set_level(blinking_pin_2_g, 1);
+   } else {
+      gpio_set_level(blinking_pin_1_g, 1);
+      gpio_set_level(blinking_pin_2_g, 0);
+   }
+}
+
+void turn_off_blinking_leds() {
+   gpio_set_level(blinking_pin_1_g, 0);
+   gpio_set_level(blinking_pin_2_g, 0);
+}
+
+static void update_firmware_task() {
    esp_err_t err;
    // update handle : set by esp_ota_begin(), must be freed via esp_ota_end()
    esp_ota_handle_t update_handle = 0;
@@ -254,6 +270,9 @@ static void update_firmware_task(void *pvParameter) {
       #endif
    }
 
+   turn_off_blinking_leds();
+
+   // Flash sector is erased here
    err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
 
    if (err != ESP_OK) {
@@ -306,7 +325,6 @@ static void update_firmware_task(void *pvParameter) {
          }
 
          binary_file_length += buff_len;
-         //ESP_LOGI(TAG, "Have written image length %d", binary_file_length);
       } else if (buff_len == 0) { // packet over
          flag = false;
 
@@ -324,6 +342,8 @@ static void update_firmware_task(void *pvParameter) {
       if (esp_ota_firm_is_finished(&ota_firm)) {
          break;
       }
+
+      blink();
    }
 
    #ifdef ALLOW_USE_PRINTF
@@ -363,7 +383,10 @@ static void on_update_timeout() {
    esp_restart();
 }
 
-void update_firmware() {
+void update_firmware(unsigned int blinking_pin_1, unsigned int blinking_pin_2) {
+   blinking_pin_1_g = blinking_pin_1;
+   blinking_pin_2_g = blinking_pin_2;
+
    // Resolves an exception error when calling esp_restart() in the end of updating
    disable_wifi_event_handler();
 
@@ -371,7 +394,7 @@ void update_firmware() {
          .callback = &on_update_timeout
    };
    ESP_ERROR_CHECK(esp_timer_create(&timer_config, &upgrade_timer))
-   ESP_ERROR_CHECK(esp_timer_start_once(upgrade_timer, 300000 * 1000))
+   ESP_ERROR_CHECK(esp_timer_start_once(upgrade_timer, 120 * 1000 * 1000))
 
    xTaskCreate(update_firmware_task, "update_firmware_task", configMINIMAL_STACK_SIZE * 6, NULL, 5, NULL);
 }

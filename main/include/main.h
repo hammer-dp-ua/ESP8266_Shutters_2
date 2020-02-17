@@ -1,26 +1,8 @@
-#include <stdio.h>
-#include "esp_timer.h"
-#include "esp_system.h"
-
-#include "portmacro.h"
 #include "freertos/FreeRTOS.h"
-#include "freertos/timers.h"
-#include "freertos/semphr.h"
-
 #include "driver/uart.h"
-#include "driver/gpio.h"
-#include "driver/i2c.h"
-#include "driver/adc.h"
 
-#include "esp8266/rtc_register.h"
-#include "internal/esp_system_internal.h"
-#include "esp_wifi.h"
-#include "string.h"
-
-#include "utils.h"
 #include "global_definitions.h"
 #include "malloc_logger.h"
-#include "events.h"
 #include "ota.h"
 
 #ifndef MAIN_HEADER
@@ -104,7 +86,7 @@ const char STATUS_INFO_REQUEST_PAYLOAD_TEMPLATE[] =
 const char UPDATE_FIRMWARE[] = "\"updateFirmware\":true";
 
 static void stop_both_leds_blinking();
-static void close_opened_sockets();
+static void delete_tcp_server();
 static void start_blinking_on_shutters_opening();
 static void start_blinking_on_shutters_closing();
 
