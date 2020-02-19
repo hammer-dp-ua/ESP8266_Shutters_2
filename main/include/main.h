@@ -89,6 +89,7 @@ static void stop_both_leds_blinking();
 static void delete_tcp_server();
 static void start_blinking_on_shutters_opening();
 static void start_blinking_on_shutters_closing();
+static void tcp_server_task();
 
 #endif
 

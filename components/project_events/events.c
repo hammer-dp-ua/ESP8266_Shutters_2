@@ -64,6 +64,10 @@ void save_delete_tcp_server_event() {
    xEventGroupSetBits(flags_g, DELETE_TCP_SERVER_FLAG);
 }
 
+void clear_tcp_server_deletion_event() {
+   xEventGroupClearBits(flags_g, DELETE_TCP_SERVER_FLAG);
+}
+
 bool is_tcp_server_to_be_deleted() {
    return xEventGroupGetBits(flags_g) & DELETE_TCP_SERVER_FLAG;
 }

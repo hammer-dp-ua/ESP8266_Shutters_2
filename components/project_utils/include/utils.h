@@ -5,6 +5,7 @@
 #include "global_definitions.h"
 #include "malloc_logger.h"
 #include "events.h"
+#include "esp_timer.h"
 
 #include "esp_err.h"
 #include "esp_event_loop.h"
@@ -20,6 +21,7 @@
 
 #define RTC_MEM_BASE 0x60001000
 
+void init_utils(unsigned int *time);
 void *set_string_parameters(const char string[], const char *parameters[]);
 void wifi_init_sta(void (*on_connected)(), void (*on_disconnected)(), void (*on_connection)());
 void rtc_mem_read(unsigned int addr, void *dst, unsigned int length);

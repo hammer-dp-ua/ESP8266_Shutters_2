@@ -9,8 +9,8 @@
 
 #include "main.h"
 
-static unsigned int milliseconds_counter_g;
-static int signal_strength_g;
+static unsigned int milliseconds_counter_g = 0;
+static int signal_strength_g = 0;
 static unsigned short errors_counter_g = 0;
 static unsigned short repetitive_request_errors_counter_g = 0;
 static unsigned char pending_connection_errors_counter_g;
@@ -655,6 +655,11 @@ static void delete_tcp_server() {
    close_tcp_server_sockets();
 }
 
+static void create_tcp_server() {
+   clear_tcp_server_deletion_event();
+   xTaskCreate(tcp_server_task, "tcp_server_task", configMINIMAL_STACK_SIZE * 3, NULL, 1, &tcp_server_task_g);
+}
+
 static void tcp_server_task() {
    while (true) {
       if (is_tcp_server_to_be_deleted()) {
@@ -835,31 +840,20 @@ static void pins_config() {
    #endif
 }
 
-void on_wifi_connected_task() {
+void on_wifi_connected() {
    gpio_set_level(AP_CONNECTION_STATUS_LED_PIN, 1);
    repetitive_ap_connecting_errors_counter_g = 0;
 
-   xTaskCreate(tcp_server_task, "tcp_server_task", configMINIMAL_STACK_SIZE * 3, NULL, 1, &tcp_server_task_g);
+   create_tcp_server();
    send_status_info();
-
-   vTaskDelete(NULL);
 }
 
-void on_wifi_connected() {
-   xTaskCreate(on_wifi_connected_task, "on_wifi_connected_task", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-}
-
-void on_wifi_disconnected_task() {
+void on_wifi_disconnected() {
    repetitive_ap_connecting_errors_counter_g++;
    gpio_set_level(AP_CONNECTION_STATUS_LED_PIN, 0);
    gpio_set_level(SERVER_AVAILABILITY_STATUS_LED_PIN, 0);
 
    delete_tcp_server();
-   vTaskDelete(NULL);
-}
-
-void on_wifi_disconnected() {
-   xTaskCreate(on_wifi_disconnected_task, "on_wifi_disconnected_task", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 }
 
 static void blink_on_wifi_connection_task() {
@@ -983,6 +977,7 @@ void app_main(void) {
    uart_config();
 
    init_events();
+   init_utils(&milliseconds_counter_g);
 
    start_both_leds_blinking(100);
    vTaskDelay(5000 / portTICK_RATE_MS);
@@ -1011,7 +1006,7 @@ void app_main(void) {
 
    xTaskCreate(scan_access_point_task, "scan_access_point_task", configMINIMAL_STACK_SIZE * 3, NULL, 1, NULL);
 
-   schedule_errors_checker(ERRORS_CHECKER_INTERVAL_MS);
+   //schedule_errors_checker(ERRORS_CHECKER_INTERVAL_MS);
    schedule_sending_status_info(STATUS_REQUESTS_SEND_INTERVAL_MS);
 
    start_100milliseconds_counter();

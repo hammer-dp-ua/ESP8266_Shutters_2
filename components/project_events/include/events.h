@@ -27,6 +27,7 @@ void save_connected_to_wifi_event();
 void clear_connected_to_wifi_event();
 bool is_connected_to_wifi();
 void save_delete_tcp_server_event();
+void clear_tcp_server_deletion_event();
 bool is_tcp_server_to_be_deleted();
 
 #endif //SHUTTERS_EVENTS_H
